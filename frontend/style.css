@@ -1,0 +1,40 @@
+#main {
+    max-width: 900px;
+    margin: auto;
+    background-color: #F4EAF1FF;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+#galery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
+
+.item {
+    border: 1px darkorange solid;
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    width: 30%;
+    min-width: 300px;
+}
+
+.div {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.image {
+    max-width: 90%;
+    max-height: 200px;
+    display: block;
+    margin: auto;
+}
