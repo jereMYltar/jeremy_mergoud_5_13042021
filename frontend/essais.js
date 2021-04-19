@@ -9,6 +9,8 @@
 //Global variable to host server's URL
 let urlServer = 'http://localhost:3000/api/';
 
+let galery = document.getElementById('galery');
+
 //Promise to exchange with the server :
 //serveur is the server's URL
 //category is the end of the server's URL
@@ -40,7 +42,6 @@ function createProductTile (collection, position) {
     let tile = [item, image, div, nom, price, description];
     let tileString = ['item', 'image', 'div', 'nom', 'price', 'description'];
 
-    let galery = document.getElementById('galery');
     galery.appendChild(item);
     item.append(image, div, description);
     div.append(nom, price);
@@ -67,17 +68,17 @@ function createAllTiles(obj) {
 //creation of all product tiles by callinf createAllTiles on the serveur response (on button click)
 let btnAdd = document.getElementById("btnAdd");
 btnAdd.addEventListener('click', () => {
-    getCollection(urlServer, 'teddies', 'GET')
-        .then((x) => {
-            // console.log(x);
-            createAllTiles(x);
-        });
+    if (!galery.lastElementChild) {
+        getCollection(urlServer, 'cameras', 'GET')
+            .then((x) => {
+                createAllTiles(x);
+            });
+    }
 });
 
 //removal of all product tiles (on button double click)
 let btnRemove = document.getElementById("btnRemove");
 btnRemove.addEventListener('dblclick', () => {
-    let galery = document.getElementById('galery');
     while (galery.lastElementChild) {
         galery.removeChild(galery.lastElementChild);
     }
