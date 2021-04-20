@@ -8,6 +8,12 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    padding: 20px 0 20px 0;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }
 
 #galery {
