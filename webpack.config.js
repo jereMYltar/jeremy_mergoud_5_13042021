@@ -3,6 +3,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+    stats: 'minimal',
+    mode: 'development',
     entry: {
         index: path.resolve(__dirname, './frontend/src/index.js'),
         utils: path.resolve(__dirname, './frontend/src/utils.js'),
@@ -20,7 +22,14 @@ module.exports = {
                 generator: {
                     filename: 'assets/images/[name][ext]'
                 }
-            },            
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/fonts/[name][ext]'
+                }
+            },     
             {
                 test: /\.html$/i,
                 loader: 'html-loader',
@@ -30,11 +39,36 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    {loader: 'css-loader'},
+                    {loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: function () {
+                                  return [require('autoprefixer')];
+                                }
+                            }
+                        }
+                    },
+                ]
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    {loader: 'css-loader'},
+                    {loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: function () {
+                                  return [require('autoprefixer')];
+                                }
+                            }
+                        }
+                    },
+                    {loader: 'sass-loader'}
+                ]
             },
             {
                 test: /\.m?js$/,
@@ -72,7 +106,5 @@ module.exports = {
         compress: true,
         port: 9000,
         writeToDisk: true,
-    },
-    
-    
+    },   
 };
