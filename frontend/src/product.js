@@ -1,8 +1,8 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
-// import '../../node_modules/bootstrap-icons/font/bootstrap-icons.css';
 import {ajax} from './utils.js';
+import '@fortawesome/fontawesome-free/js/all.min.js';
 
 let urlParams = new URLSearchParams(window.location.search);
 let cartButton = document.getElementById('cartButton');
