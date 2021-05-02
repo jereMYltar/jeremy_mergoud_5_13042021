@@ -4,10 +4,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     stats: 'minimal',
-    mode: 'production',
+    mode: 'development',
     entry: {
         index: path.resolve(__dirname, './src/index.js'),
-        utils: path.resolve(__dirname, './src/utils.js'),
         product: path.resolve(__dirname, './src/product.js'),
     },
     output: {
@@ -89,12 +88,12 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/index.html'),
-            chunks: ['index','utils'],
+            chunks: ['index'],
             filename: 'index.html'
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/product.html'),
-            chunks: ['product','utils'],
+            chunks: ['product'],
             filename: 'product.html'
         }),
         new MiniCssExtractPlugin({

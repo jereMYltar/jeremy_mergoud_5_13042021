@@ -1,8 +1,4 @@
 @import "~bootstrap/scss/bootstrap";
-// @import "~@fortawesome/fontawesome-free/scss/fontawesome";
-// @import "~@fortawesome/fontawesome-free/scss/brands";
-// @import "~@fortawesome/fontawesome-free/scss/regular";
-// @import "~@fortawesome/fontawesome-free/scss/solid";
 
 #main {
     max-width: 900px;
@@ -53,4 +49,12 @@ a {
     max-height: 200px;
     display: block;
     margin: auto;
+}
+
+footer {
+    font-size: 5rem;
+}
+
+.jm_red {
+    color: red;
 }

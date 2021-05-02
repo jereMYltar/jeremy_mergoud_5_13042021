@@ -2,7 +2,8 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {ajax} from './utils.js';
-import '@fortawesome/fontawesome-free/js/all.min.js';
+import {iconGen} from './jmicons.js';
+
 
 let urlParams = new URLSearchParams(window.location.search);
 let cartButton = document.getElementById('cartButton');
@@ -14,7 +15,9 @@ ajax('http://localhost:3000/api/teddies/' + urlParams.get('id')).then((product) 
     quantityInCart(product);
     // localStorage.clear();
     console.log(localStorage.length);
-})
+});
+
+iconGen();
 
 cartButton.addEventListener('click',() =>
 {
