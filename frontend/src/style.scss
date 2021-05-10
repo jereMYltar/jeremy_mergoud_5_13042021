@@ -51,6 +51,16 @@ a {
     margin: auto;
 }
 
+input[type=number] {
+    appearance: textarea;
+    text-align: center;
+}
+
+[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0px;
+}
+
 footer {
     font-size: 5rem;
 }
