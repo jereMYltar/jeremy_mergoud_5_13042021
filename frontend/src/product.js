@@ -3,24 +3,26 @@ import 'regenerator-runtime/runtime';
 import './style.scss';
 import {ajax} from './utils.js';
 import {iconGen} from './jmicons.js';
-import {addToCart, getQuantityInCart, displayCart, storeProduct} from './storage.js';
-
-iconGen();
+import {getProductQuantity, setProductQuantity} from './storage.js';
 
 let urlParams = new URLSearchParams(window.location.search);
 
 ajax('http://localhost:3000/api/teddies/' + urlParams.get('id')).then((product) => 
 {
     displayProduct(product);
-    getQuantityInCart(product);
+    setInputQuantity(product, document.getElementById('model').value);
     setModelChangeListener(product);
-    setAddCartButtonListener(product);
-    setClearCartButtonListener();
+    setQuantityChangeListener(product);
+    setPlusButtonsListeners(product);
+    setMinusButtonsListeners(product);
+    setClearProductButtonsListeners(product);
 });
 
 function displayProduct(product)
 {
     document.getElementById('galery').innerHTML = renderProduct(product);
+    document.getElementById('cart').innerHTML = renderCartProduct(product);
+    iconGen();
 }
 
 function renderProduct (product)
@@ -48,29 +50,99 @@ function renderProduct (product)
     return productHtml;
 }
 
-function setAddCartButtonListener (product)
+function renderCartProduct (product)
 {
-    document.getElementById('cartButton').addEventListener('click',() =>
-    {
-        // addToCart(product);
-        storeProduct(product, document.getElementById('itemQuantity').value, document.getElementById('model').value);
-    })
+    let cartProductHTML = `
+    <div id="quantity_${product._id}">
+        <button class="minusButton">
+            <i class="jmi_minusSimple"></i>
+        </button>
+        <input type="number" min=0 value="0" />
+        <button class="plusButton">
+            <i class="jmi_plusSimple"></i>
+        </button>
+        <button class="trashButton">
+            <i class="jmi_trashFill"></i>
+        </button>
+    </div>
+    `;
+    return cartProductHTML;
 }
 
-function setClearCartButtonListener ()
-{
-    document.getElementById('clearCartButton').addEventListener('click', ()=>
-    {
-        localStorage.clear();
-        document.getElementById('itemQuantity').value = 0;
-        displayCart();
-    })
-}
+// function setClearCartButtonListener (product)
+// {
+//     document.getElementById('clearCartButton').addEventListener('click', ()=>
+//     {
+//         clearCart(document.querySelector(`#quantity_${product._id} input`));
+//     })
+// }
 
 function setModelChangeListener (product)
 {
-    document.getElementById('model').addEventListener('change', () =>
+    document.getElementById('model').addEventListener('change', (e) =>
     {
-        getQuantityInCart(product);
+        setInputQuantity(product, e.target.value);
     });
+}
+
+function setInputQuantity (product, productModel)
+{
+    document.querySelector(`#quantity_${product._id} input`).value = getProductQuantity (product, productModel);
+}
+
+function setPlusButtonsListeners (product)
+{
+    document.querySelectorAll('button.plusButton').forEach( (element) =>
+    {
+        element.addEventListener('click', (e) =>
+        {
+            changeInputValue(product, e, 1);
+        });
+    });
+}
+
+function setMinusButtonsListeners (product)
+{
+    document.querySelectorAll('button.minusButton').forEach( (element) =>
+    {
+        element.addEventListener('click', (e) =>
+        {
+            changeInputValue(product, e, -1);
+        });
+    });
+}
+
+function setClearProductButtonsListeners (product)
+{
+    document.querySelectorAll('button.trashButton').forEach( (element) =>
+    {
+        element.addEventListener('click', (e) =>
+        {
+            changeInputValue(product, e, 0);
+        });
+    });
+}
+
+function setQuantityChangeListener (product)
+{
+    document.querySelector(`#quantity_${product._id} input`).addEventListener('change', (e) =>
+    {
+        setProductQuantity(product, e.target.value, document.getElementById('model').value);
+    });
+}
+
+function changeInputValue (product, event, modification)
+{
+    switch (modification) {
+        case 1:
+            setProductQuantity(product, ++document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
+            break;
+        case -1:
+            setProductQuantity(product, --document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
+            break;
+        case 0:
+            document.querySelector(`#${event.currentTarget.parentElement.id} input`).value = 0;
+            setProductQuantity(product, 0, document.getElementById('model').value);
+            break;     
+    }
 }
