@@ -83,7 +83,7 @@ export function getProductQuantity (productId, cartObject = getStorageObject())
     }
 }
 
-export function setProductQuantity (product, productId, productQuantity, productModel = "", cartObject = getStorageObject())
+export function setProductQuantity (product, productId, productQuantity, productModel, cartObject = getStorageObject())
 {
     if (productQuantity == 0)
     {
@@ -131,14 +131,12 @@ function constructProductObject (product, productQuantity, productModel)
 
 export function constructProductId (productId, productModel)
 {
-    if (productModel = "")
+    if (productModel == "")
     {
         return productId;
     }
     else
     {
-        console.log(productId);
-        console.log(productModel);
         return productId + "_" + productModel.replace(" ", "_");
     }
 }

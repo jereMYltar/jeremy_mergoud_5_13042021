@@ -86,10 +86,6 @@ function setModelChangeListener (product)
 
 function setInputQuantity (productId, productModel)
 {
-    // console.log(typeof productModel);
-    // console.log(productModel.replace(" ", "_"));
-    // console.log(typeof productModel);
-    // console.log(constructProductId(productId, productModel));
     document.querySelector(`#quantity_${productId} input`).value = getProductQuantity(constructProductId(productId, productModel));
 }
 
