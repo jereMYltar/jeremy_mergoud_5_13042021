@@ -51,6 +51,23 @@ a {
     margin: auto;
 }
 
+.cartItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cartImage {
+    max-width: 150px;
+    display: block;
+    margin: 20px;
+}
+
+.cartItemName {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
 input[type=number] {
     appearance: textarea;
     text-align: center;

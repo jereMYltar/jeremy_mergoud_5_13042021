@@ -3,14 +3,14 @@ import 'regenerator-runtime/runtime';
 import './style.scss';
 import {ajax} from './utils.js';
 import {iconGen} from './jmicons.js';
-import {getProductQuantity, setProductQuantity} from './storage.js';
+import {getProductQuantity, setProductQuantity, constructProductId} from './storage.js';
 
 let urlParams = new URLSearchParams(window.location.search);
 
 ajax('http://localhost:3000/api/teddies/' + urlParams.get('id')).then((product) => 
 {
     displayProduct(product);
-    setInputQuantity(product, document.getElementById('model').value);
+    setInputQuantity(product._id, document.getElementById('model').value);
     setModelChangeListener(product);
     setQuantityChangeListener(product);
     setPlusButtonsListeners(product);
@@ -52,7 +52,7 @@ function renderProduct (product)
 
 function renderCartProduct (product)
 {
-    let cartProductHTML = `
+    return `
     <div id="quantity_${product._id}">
         <button class="minusButton">
             <i class="jmi_minusSimple"></i>
@@ -66,7 +66,6 @@ function renderCartProduct (product)
         </button>
     </div>
     `;
-    return cartProductHTML;
 }
 
 // function setClearCartButtonListener (product)
@@ -81,13 +80,17 @@ function setModelChangeListener (product)
 {
     document.getElementById('model').addEventListener('change', (e) =>
     {
-        setInputQuantity(product, e.target.value);
+        setInputQuantity(product._id, e.target.value);
     });
 }
 
-function setInputQuantity (product, productModel)
+function setInputQuantity (productId, productModel)
 {
-    document.querySelector(`#quantity_${product._id} input`).value = getProductQuantity (product, productModel);
+    // console.log(typeof productModel);
+    // console.log(productModel.replace(" ", "_"));
+    // console.log(typeof productModel);
+    // console.log(constructProductId(productId, productModel));
+    document.querySelector(`#quantity_${productId} input`).value = getProductQuantity(constructProductId(productId, productModel));
 }
 
 function setPlusButtonsListeners (product)
@@ -127,7 +130,7 @@ function setQuantityChangeListener (product)
 {
     document.querySelector(`#quantity_${product._id} input`).addEventListener('change', (e) =>
     {
-        setProductQuantity(product, e.target.value, document.getElementById('model').value);
+        setProductQuantity(product, product._id, e.target.value, document.getElementById('model').value);
     });
 }
 
@@ -135,14 +138,14 @@ function changeInputValue (product, event, modification)
 {
     switch (modification) {
         case 1:
-            setProductQuantity(product, ++document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
+            setProductQuantity(product, product._id, ++document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
             break;
         case -1:
-            setProductQuantity(product, --document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
+            setProductQuantity(product, product._id, --document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
             break;
         case 0:
             document.querySelector(`#${event.currentTarget.parentElement.id} input`).value = 0;
-            setProductQuantity(product, 0, document.getElementById('model').value);
+            setProductQuantity(product, product._id, 0, document.getElementById('model').value);
             break;     
     }
 }

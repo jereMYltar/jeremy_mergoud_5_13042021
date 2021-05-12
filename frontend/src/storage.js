@@ -52,45 +52,57 @@
 //     alert(msg);
 // }
 
-export function clearCart (input)
-{
-    localStorage.clear();
-    input.value = 0;
-}
+// export function clearCart (input)
+// {
+//     localStorage.clear();
+//     input.value = 0;
+// }
 
-export function getProductQuantity (product, productModel)
+// export function getProductQuantity (product, productModel)
+// {
+//     let basket = getStorageObject();
+//     if (!basket[constructProductId (product, productModel)])
+//     {
+//         return 0;
+//     }
+//     else
+//     {
+//         return basket[constructProductId (product, productModel)]["quantity"];
+//     }
+// }
+
+export function getProductQuantity (productId, cartObject = getStorageObject())
 {
-    let basket = getStorageObject();
-    if (!basket[constructProductId (product, productModel)])
+    if (!cartObject[productId])
     {
         return 0;
     }
     else
     {
-        return basket[constructProductId (product, productModel)]["quantity"];
+        return cartObject[productId]["quantity"];
     }
 }
 
-export function setProductQuantity (product, productQuantity, productModel, cartObject = getStorageObject())
+export function setProductQuantity (product, productId, productQuantity, productModel = "", cartObject = getStorageObject())
 {
     if (productQuantity == 0)
     {
-        delete cartObject[constructProductId(product, productModel)];
+        delete cartObject[constructProductId(productId, productModel)];
         setStorageObject(cartObject);
     }
     else
     {
-        storeProduct(product, productQuantity, productModel);
+        storeProduct(product, productId, productQuantity, productModel);
     }
 }
 
-function storeProduct (product, productQuantity, productModel, cartObject = getStorageObject())
+function storeProduct (product, productId, productQuantity, productModel, cartObject = getStorageObject())
 {
-    cartObject[constructProductId (product, productModel)] = constructProductObject (product, productQuantity, productModel);
+    cartObject[constructProductId(productId, productModel)] = constructProductObject(product, productQuantity, productModel);
     setStorageObject(cartObject);
 }
 
-function getStorageObject ()
+export function getStorageObject ()
 {
     if (!localStorage.getItem("cart"))
     {
@@ -108,7 +120,7 @@ function constructProductObject (product, productQuantity, productModel)
 {
     return {
         name : product.name,
-        id : product._id,
+        _id : product._id,
         color : productModel,
         imageUrl : product.imageUrl,
         price : product.price,
@@ -117,7 +129,16 @@ function constructProductObject (product, productQuantity, productModel)
     };
 }
 
-function constructProductId (product, productModel)
+export function constructProductId (productId, productModel)
 {
-    return product._id + "_" + productModel.replace(" ", "_");
+    if (productModel = "")
+    {
+        return productId;
+    }
+    else
+    {
+        console.log(productId);
+        console.log(productModel);
+        return productId + "_" + productModel.replace(" ", "_");
+    }
 }

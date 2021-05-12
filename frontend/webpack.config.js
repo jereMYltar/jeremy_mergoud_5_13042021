@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         index: path.resolve(__dirname, './src/index.js'),
         product: path.resolve(__dirname, './src/product.js'),
+        cart: path.resolve(__dirname, './src/cart.js'),
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -95,6 +96,11 @@ module.exports = {
             template: path.resolve(__dirname, './src/product.html'),
             chunks: ['product'],
             filename: 'product.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, './src/cart.html'),
+            chunks: ['cart'],
+            filename: 'cart.html'
         }),
         new MiniCssExtractPlugin({
             filename: 'style.css',
