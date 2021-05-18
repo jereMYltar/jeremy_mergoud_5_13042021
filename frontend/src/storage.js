@@ -140,3 +140,36 @@ export function constructProductId (productId, productModel)
         return productId + "_" + productModel.replace(" ", "_");
     }
 }
+
+
+/*----------------------------------------------------------------------------------------------*/
+function getStorage (key)
+{
+    if (!!localStorage.getItem(key))
+    {
+        return JSON.parse(localStorage.getItem(key));
+    }
+    else
+    {
+        return null;
+    }
+}
+
+function clearStorage ()
+{
+    localStorage.clear();
+}
+
+function hasProduct (product, model)
+{
+    if (!!localStorage['cart'][product._Id + "_" + model.replace(" ", "_")])
+    {
+        return true;
+    }
+    return false;
+}
+
+function deleteProduct (product)
+{
+    
+}
