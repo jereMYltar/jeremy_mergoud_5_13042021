@@ -1,5 +1,5 @@
 //search all nodes with jmi classes, and replace them with svg tag
-export function iconGen()
+export function displayIcons()
 {
     jmClassCreator();
     let elements = document.querySelectorAll('i[class*="jmi"]');
