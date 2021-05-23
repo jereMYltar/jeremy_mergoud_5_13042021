@@ -2,12 +2,12 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {ajax} from './utils.js';
-import {iconGen} from './jmicons.js';
+import {displayIcons} from './jmicons.js';
 import {getProductQuantity, setProductQuantity, getStorageObject} from './storage.js';
 
 displayCart(getStorageObject());
 
-iconGen();
+displayIcons();
 
 function displayCart (object)
 {

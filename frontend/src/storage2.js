@@ -1,24 +1,23 @@
-function has(key)
+export function has(key)
 {
-    if (!!localStorage.getItem(key))
-    {
-        return true;
-    }
-    return false;
+    return (!localStorage.getItem(key));
 }
 
-function get(key)
+export function get(key)
 {
     if (has(key))
     {
-        return JSON.parse(localStorage.getItem(key));
+        localStorage.setItem(key, "{}");
     }
-    return 0;
+    return JSON.parse(localStorage.getItem(key));
 }
 
-function set(key, value)
+export function set(key, value)
 {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
-function
+export function remove(key)
+{
+    localStorage.removeItem(key);
+}
