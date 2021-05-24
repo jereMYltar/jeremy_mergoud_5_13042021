@@ -1,164 +1,143 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
-// import {ajax} from './utils.js';
-import {iconGen} from './jmicons.js';
-import {getProductQuantity, setProductQuantity, constructProductId} from './storage.js';
+import {displayIcons} from './jmicons.js';
+import {has, get, set} from './storage.js';
+import {haveId, haveModel, addId, addModel, removeId, removeModel, getQuantity, setQuantity, qtyManagement, countCart, displayCartCount, fixValue, isEmpty, disableElt, displayElt} from './utils.js';
 
 let urlParams = new URLSearchParams(window.location.search);
-
-// ajax('http://localhost:3000/api/teddies/' + urlParams.get('id')).then((product) => 
-// {
-//     displayProduct(product);
-//     setInputQuantity(product._id, document.getElementById('model').value);
-//     setListeners(product);
-// });
-
 fetch('http://localhost:3000/api/teddies/' + urlParams.get('id'))
-.then((response) => 
-{
-    return response.json();
-})
-.then((product) =>
-{
-    displayProduct(product);
-    setInputQuantity(product._id, document.getElementById('model').value);
-    setListeners(product);
-});
+    .then((response) => 
+    {
+        return response.json();
+    })
+    .then((product) =>
+    {
+        display(product);
+        setListeners(product);
+    });
 
-function displayProduct(product)
+// Display
+function display (product)
 {
-    document.getElementById('galery').innerHTML = renderProduct(product);
-    document.getElementById('cart').innerHTML = renderCartProduct(product);
-    iconGen();
+    displayImage(product);
+    displayName(product);
+    displayPrice(product);
+    displayOptions(product);
+    displayDescription(product);
+    displayQuantity(product._id, getModelSelected());
+    displayCartCount();
+    displayIcons();
 }
 
-function renderProduct (product)
+function displayImage (product)
 {
-    let productHtml = `
-<div class="item">
-    <img class="image" src=${product.imageUrl} alt=${product.name}>
-    <div class="div">
-        <h3 class="nom">${product.name}</h3>
-        <p class="price">${product.price/100} €</p>
-    </div>
-    <div>
-        <label for="model">Choisissez un modèle : </label>
-        <select name="model" id="model">
-`;
-product.colors.forEach(element => {
-    productHtml += `<option value="${element}">${element}</option>`;
-});
-productHtml += `
-        </select>
-    </div>
-    <p class="description">${product.description}</p>
-</div>
-`;
-return productHtml;
+    let image = document.querySelector('#gallery>article>img');
+    image.setAttribute('src', product.imageUrl);
+    image.setAttribute('alt', product.name);
 }
 
-function renderCartProduct (product)
+function displayName (product)
 {
-    return `
-    <div id="quantity_${product._id}">
-        <button class="minusButton">
-            <i class="jmi_minusSimple"></i>
-        </button>
-        <input type="number" min=0 value="0" />
-        <button class="plusButton">
-            <i class="jmi_plusSimple"></i>
-        </button>
-        <button class="trashButton">
-            <i class="jmi_trashFill"></i>
-        </button>
-    </div>
-    `;
+    document.querySelector('#name').innerText = product.name;
 }
 
-// function setClearCartButtonListener (product)
-// {
-//     document.getElementById('clearCartButton').addEventListener('click', ()=>
-//     {
-//         clearCart(document.querySelector(`#quantity_${product._id} input`));
-//     })
-// }
+function displayPrice (product)
+{
+    document.querySelector('#price').innerText = `Prix unitaire : ${(product.price/100).toFixed(2)} € TTC`;
+}
 
+function displayDescription (product)
+{
+    document.querySelector('#description').innerText = product.description;
+}
+
+function displayOptions (product)
+{
+    document.querySelector('#options').innerHTML = renderOptions(product);
+}
+
+function renderOptions (product)
+{
+    let render;
+    product.colors.forEach(color => 
+    {
+        render += `<option>${color}</option>`;
+    });
+    return render;
+}
+
+function displayQuantity (id, model)
+{
+    document.querySelector(`aside>input`).value = getQuantity(get("cart"), id, model);
+    disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+}
+
+// Listeners
 function setListeners (product)
 {
-    setModelChangeListener(product);
-    setQuantityChangeListener(product, product._id);
-    setPlusButtonsListeners(product, product._id);
-    setMinusButtonsListeners(product, product._id);
-    setClearProductButtonsListeners(product, product._id);
+    listenOptionsChange(product);
+    listenInputChange(product);
+    listenMinusButton (product);
+    listenPlusButton(product);
+    listenTrashButton (product);
 }
 
-function setModelChangeListener (product)
+function listenOptionsChange (product)
 {
-    document.getElementById('model').addEventListener('change', (e) =>
+    document.querySelector('#options').addEventListener('change', (e) =>
     {
-        setInputQuantity(product._id, e.target.value);
+        displayQuantity (product._id, getModelSelected());
     });
 }
 
-function setInputQuantity (productId, productModel)
+function listenInputChange (product)
 {
-    document.querySelector(`#quantity_${productId} input`).value = getProductQuantity(constructProductId(productId, productModel));
-}
-
-function setPlusButtonsListeners (product, productId)
-{
-    document.querySelectorAll('button.plusButton').forEach( (element) =>
+    document.querySelector('aside>input').addEventListener('change', (e) =>
     {
-        element.addEventListener('click', (e) =>
-        {
-            changeInputValue(product, productId, e, 1);
-        });
+        e.target.value = fixValue(e.target.value);
+        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
+        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
-function setMinusButtonsListeners (product, productId)
+function listenMinusButton (product)
 {
-    document.querySelectorAll('button.minusButton').forEach( (element) =>
+    document.querySelector('#minusButton').addEventListener('click', (e) =>
     {
-        element.addEventListener('click', (e) =>
-        {
-            changeInputValue(product, productId, e, -1);
-        });
+        --document.querySelector(`#${e.currentTarget.parentElement.id} input`).value;
+        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
+        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
-function setClearProductButtonsListeners (product, productId)
+function listenPlusButton (product)
 {
-    document.querySelectorAll('button.trashButton').forEach( (element) =>
+    document.querySelector('#plusButton').addEventListener('click', (e) =>
     {
-        element.addEventListener('click', (e) =>
-        {
-            changeInputValue(product, productId, e, 0);
-        });
+        ++document.querySelector(`#${e.currentTarget.parentElement.id} input`).value;
+        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
+        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
-function setQuantityChangeListener (product, productId)
+function listenTrashButton (product)
 {
-    document.querySelector(`#quantity_${product._id} input`).addEventListener('change', (e) =>
+    document.querySelector('#trashButton').addEventListener('click', (e) =>
     {
-        setProductQuantity(product, productId, e.target.value, document.getElementById('model').value);
+        document.querySelector(`#${e.currentTarget.parentElement.id} input`).value = 0;
+        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
+        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
-function changeInputValue (product, productId, event, modification)
+//data recovering
+function getQuantitySelected ()
 {
-    switch (modification) {
-        case 1:
-            setProductQuantity(product, productId, ++document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
-            break;
-        case -1:
-            setProductQuantity(product, productId, --document.querySelector(`#${event.currentTarget.parentElement.id} input`).value, document.getElementById('model').value);
-            break;
-        case 0:
-            document.querySelector(`#${event.currentTarget.parentElement.id} input`).value = 0;
-            setProductQuantity(product, productId, 0, document.getElementById('model').value);
-            break;     
-    }
+    return document.querySelector('aside>input').value;
+}
+
+function getModelSelected ()
+{
+    return document.querySelector('#options').value;
 }

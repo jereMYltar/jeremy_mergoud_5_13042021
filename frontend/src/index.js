@@ -1,12 +1,22 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
-import {ajax} from './utils.js';
 
-ajax('http://localhost:3000/api/teddies').then((products) => 
-{
-    displayProducts(products);
-})
+import {displayIcons} from './jmicons.js';
+import {displayCartCount} from './utils.js';
+
+
+fetch('http://localhost:3000/api/teddies')
+    .then((response) => 
+    {
+        return response.json();
+    })
+    .then((products) => 
+    {
+        displayProducts(products);
+        displayIcons();
+        displayCartCount();
+    })
 
 function displayProducts(products) 
 {

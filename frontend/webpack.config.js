@@ -7,7 +7,7 @@ module.exports = {
     mode: 'development',
     entry: {
         index: path.resolve(__dirname, './src/index.js'),
-        product: path.resolve(__dirname, './src/product2.js'),
+        product: path.resolve(__dirname, './src/product.js'),
         cart: path.resolve(__dirname, './src/cart.js'),
     },
     output: {

@@ -10794,6 +10794,42 @@ a {
   font-weight: bold;
 }
 
+.cart {
+  position: relative;
+}
+
+.displayRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.displayColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#cartCount {
+  font-size: 0.5rem;
+  height: 0.7rem;
+  width: 0.7rem;
+  border-radius: 50%;
+  background-color: yellow;
+  font-weight: bolder;
+  position: absolute;
+  left: 75%;
+  bottom: -10%;
+  margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.noDisplay {
+  display: none;
+}
+
 input[type=number] {
   appearance: textarea;
   text-align: center;
