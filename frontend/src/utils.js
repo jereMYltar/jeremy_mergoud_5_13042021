@@ -1,6 +1,8 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import {has, get, set} from './storage.js';
+import {Storage} from './storage.js';
+
+let storage = new Storage();
 
 export function ajax(url, method = 'GET') {
     return new Promise((resolve, reject) => 
@@ -75,7 +77,7 @@ export function getQuantity (obj, id, model)
 
 export function setQuantity (id, model, qty)
 {
-    let cart = get("cart");
+    let cart = storage.get("cart");
     if (qty == 0 && haveModel(cart, id, model))
     {
         removeModel(cart, id, model);
@@ -87,7 +89,7 @@ export function setQuantity (id, model, qty)
         addModel(cart, id, model);
         cart[id][model] = parseInt(qty, 10);
     }
-    set("cart", cart);
+    storage.set("cart", cart);
 }
 
 export function qtyManagement (id, model, qty)
@@ -98,7 +100,7 @@ export function qtyManagement (id, model, qty)
 
 export function countCart()
 {
-    let cart = get("cart");
+    let cart = storage.get("cart");
     let count = 0;
     Object.keys(cart).forEach((id) =>
     {
@@ -112,47 +114,71 @@ export function countCart()
 
 export function displayCartCount()
 {
-    let elt = document.querySelector("#cartCount");
-    elt.innerText = countCart();
-    displayElt(elt, countCart());
+    let total = countCart();
+    document.getElementById("cartCount").innerText = total;
+    hide("cartCount");
+    if (total > 0)
+    {
+        show("cartCount");
+    }
 }
 
-//tools
-export function fixValue (value)
+//Target interraction
+export function activateTargetEvent(target, event)
 {
-    if (value < 0)
-    {
-        return 0;
-    }
-    return Math.floor(value);
+    let action = new Event(event);
+    target.dispatchEvent(action);
 }
+
+export function increaseTargetValue(target)
+{
+    return ++target.value;
+}
+
+export function decreaseTargetValue(target)
+{
+    return --target.value;
+}
+
+export function setTargetValue(target, value)
+{
+    target.value = value;
+}
+
+export function fixTargetValue (target)
+{
+    if (target.value < 0)
+    {
+        target.value = 0;
+    }
+    else
+    {
+        target.value = Math.floor(target.value);
+    }
+}
+
+//Generic tools
 
 export function isEmpty(obj) {
     return Object.keys(obj).length === 0;
   }
 
-export function disableElt(elt, qty)
+export function makeEltClickable(elt, qty)
 {
-    if (qty <= 0)
-    {
-        elt.setAttribute("disabled", true);
-    }
-    else
+    elt.setAttribute("disabled", true);
+    if (qty > 0)
     {
         elt.removeAttribute("disabled");
     }
 }
 
-export function displayElt(elt, qty)
+export function show(id)
 {
-    if (qty <= 0)
-    {
-        // elt.classList.add("noDisplay");
-        elt.style.display = "none";
-    }
-    else
-    {
-        // elt.classList.remove("noDisplay");
-        elt.style.display = "flex";
-    }
+        document.getElementById(id).style.display = "flex";
 }
+
+export function hide(id)
+{
+    document.getElementById(id).style.display = "none";
+}
+

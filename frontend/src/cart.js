@@ -2,9 +2,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {displayIcons} from './jmicons.js';
-import {has, get, set} from './storage.js';
-import {haveId, haveModel, addId, addModel, removeId, removeModel, getQuantity, setQuantity, qtyManagement, countCart, displayCartCount, fixValue, isEmpty, disableElt, displayElt} from './utils.js';
+import {haveId, getQuantity, qtyManagement, displayCartCount, fixTargetValue, activateTargetEvent, increaseTargetValue, decreaseTargetValue, setTargetValue} from './utils.js';
+import {Storage} from './storage.js';
 
+let storage = new Storage();
 
 fetch('http://localhost:3000/api/teddies/')
     .then((response) => 
@@ -13,11 +14,8 @@ fetch('http://localhost:3000/api/teddies/')
     })
     .then((products) =>
     {
-        displayProducts(get("cart"), products);
-        displayQuantities(products)
-        displayIcons();
-        displayCartCount();
-        setListeners();
+        display(products);
+        listen(products);
     });
 
 
@@ -41,7 +39,7 @@ function renderModel(product, model)
     return `
         <div class="displayRow" id="${setId(product._id, model)}">
             <h4>${model}</h4>
-            <p>${product.price/100} €</p>
+            <p class="unitPrice">${(product.price/100).toFixed(2)} € TTC</p>
             <div class="displayRow" id="${model.replace(" ", "_")}_qty">
                 <button class="minusButton">
                     <i class="jmi_minusSimple"></i>
@@ -54,11 +52,20 @@ function renderModel(product, model)
                     <i class="jmi_trashFill"></i>
                 </button>
             </div>
-            <p class="subTotal">Prix total</p>
+            <p class="subtotal">Prix total</p>
         </div>`;
 }
 
 // Display
+function display (products)
+{
+    displayProducts(storage.get("cart"), products);
+    displayQuantities(products);
+    displayTotals(products);
+    displayIcons();
+    displayCartCount();
+}
+
 function displayProducts(cart, products)
 {
     Object.keys(cart).forEach((id) => 
@@ -81,28 +88,43 @@ function displayQuantities ()
     document.querySelectorAll(`input`).forEach((elt) =>
     {
         let source = elt.parentElement.parentElement.id;
-        elt.value = getQuantity(get("cart"), getId(source), getModel(source));
+        elt.value = getQuantity(storage.get("cart"), getId(source), getModel(source));
     });
 }
 
-// Listeners
-function setListeners ()
+function displayTotals (products)
 {
-    listenInputsChange();
+    let total = 0;
+    document.querySelectorAll(`.subtotal`).forEach((elt) =>
+    {
+        let source = elt.parentElement.id;
+        let qty = getQuantity(storage.get("cart"), getId(source), getModel(source));
+        let unitPrice = findProduct(products, [getId(source)]).price;
+        elt.innerText = calculateSubtotal(unitPrice, qty) + " € TTC";
+        total += qty * unitPrice;
+    });
+    document.getElementById('totalPrice').innerText = (total / 100).toFixed(2) + " € TTC";
+}
+
+// Listeners
+function listen (products)
+{
+    listenInputsChange(products);
     listenMinusButtons();
     listenPlusButtons();
     listenTrashButtons();
 }
 
-function listenInputsChange ()
+function listenInputsChange (products)
 {
     document.querySelectorAll('input').forEach((elt) =>
     {
         elt.addEventListener('change', (e) =>
         {
+            fixTargetValue(e.target);
             let source = e.currentTarget.parentElement.parentElement.id;
-            e.target.value = fixValue(e.target.value);
             qtyManagement(getId(source), getModel(source), e.target.value);
+            displayTotals(products);
             displayManagement(e);
         });
 
@@ -115,10 +137,9 @@ function listenMinusButtons ()
     {
         elt.addEventListener('click', (e) =>
         {
-            let source = e.currentTarget.parentElement.parentElement.id;
-            let qty = --document.querySelector(`#${source} input`).value;
-            qtyManagement(getId(source), getModel(source), qty);
-            displayManagement(e);
+            let target = document.querySelector(`#${e.currentTarget.parentElement.parentElement.id} input`);
+            decreaseTargetValue(target);
+            activateTargetEvent(target, "change");
         });
 
     });
@@ -130,12 +151,11 @@ function listenPlusButtons ()
     {
         elt.addEventListener('click', (e) =>
         {
-            let source = e.currentTarget.parentElement.parentElement.id;
-            let qty = ++document.querySelector(`#${source} input`).value;
-            qtyManagement(getId(source), getModel(source), qty);
-            displayManagement(e);
+            let target = document.querySelector(`#${e.currentTarget.parentElement.parentElement.id} input`);
+            increaseTargetValue(target);
+            activateTargetEvent(target, "change");
         });
-
+        
     });
 }
 
@@ -145,10 +165,9 @@ function listenTrashButtons ()
     {
         elt.addEventListener('click', (e) =>
         {
-            let source = e.currentTarget.parentElement.parentElement.id;
-            document.querySelector(`#${source} input`).value = 0;
-            qtyManagement(getId(source), getModel(source), 0);
-            displayManagement(e);
+            let target = document.querySelector(`#${e.currentTarget.parentElement.parentElement.id} input`);
+            setTargetValue(target, 0);
+            activateTargetEvent(target, "change");
         });
 
     });
@@ -166,7 +185,7 @@ function displayManagement (elt)
 
 function removeElementDisplayed (source)
 {
-    if (haveId(get("cart"),[getId(source.id)]))
+    if (haveId(storage.get("cart"),[getId(source.id)]))
     {
         source.remove();
     }
@@ -201,4 +220,9 @@ function findProduct(products, id)
             return products[key]["_id"] == id;
         });
     return products[goodKey];
+}
+
+function calculateSubtotal(unitPrice, qty)
+{
+    return (unitPrice * qty / 100).toFixed(2);
 }

@@ -1,23 +1,31 @@
-export function has(key)
-{
-    return (!localStorage.getItem(key));
-}
+export class Storage {
 
-export function get(key)
-{
-    if (has(key))
+    constructor()
     {
-        localStorage.setItem(key, "{}");
+        this.location = localStorage;
     }
-    return JSON.parse(localStorage.getItem(key));
-}
-
-export function set(key, value)
-{
-    localStorage.setItem(key, JSON.stringify(value));
-}
-
-export function remove(key)
-{
-    localStorage.removeItem(key);
+    
+    has(key)
+    {
+        return (!this.location.getItem(key));
+    }
+    
+    get(key)
+    {
+        if (this.has(key))
+        {
+            this.location.setItem(key, "{}");
+        }
+        return JSON.parse(this.location.getItem(key));
+    }
+    
+    set(key, value)
+    {
+        this.location.setItem(key, JSON.stringify(value));
+    }
+    
+    remove(key)
+    {
+        this.location.removeItem(key);
+    }
 }

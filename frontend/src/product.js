@@ -2,8 +2,10 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {displayIcons} from './jmicons.js';
-import {has, get, set} from './storage.js';
-import {haveId, haveModel, addId, addModel, removeId, removeModel, getQuantity, setQuantity, qtyManagement, countCart, displayCartCount, fixValue, isEmpty, disableElt, displayElt} from './utils.js';
+import {Storage} from './storage.js';
+import {getQuantity, qtyManagement, displayCartCount, fixTargetValue, makeEltClickable, increaseTargetValue, decreaseTargetValue, setTargetValue, activateTargetEvent} from './utils.js';
+
+let storage = new Storage();
 
 let urlParams = new URLSearchParams(window.location.search);
 fetch('http://localhost:3000/api/teddies/' + urlParams.get('id'))
@@ -14,7 +16,7 @@ fetch('http://localhost:3000/api/teddies/' + urlParams.get('id'))
     .then((product) =>
     {
         display(product);
-        setListeners(product);
+        listen();
     });
 
 // Display
@@ -69,65 +71,65 @@ function renderOptions (product)
 
 function displayQuantity (id, model)
 {
-    document.querySelector(`aside>input`).value = getQuantity(get("cart"), id, model);
-    disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+    document.querySelector(`aside>input`).value = getQuantity(storage.get("cart"), id, model);
+    makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
 }
 
 // Listeners
-function setListeners (product)
+function listen ()
 {
-    listenOptionsChange(product);
-    listenInputChange(product);
-    listenMinusButton (product);
-    listenPlusButton(product);
-    listenTrashButton (product);
+    listenOptionsChange();
+    listenInputChange();
+    listenMinusButton ();
+    listenPlusButton();
+    listenTrashButton ();
 }
 
-function listenOptionsChange (product)
+function listenOptionsChange ()
 {
     document.querySelector('#options').addEventListener('change', (e) =>
     {
-        displayQuantity (product._id, getModelSelected());
+        displayQuantity (urlParams.get('id'), getModelSelected());
     });
 }
 
-function listenInputChange (product)
+function listenInputChange ()
 {
     document.querySelector('aside>input').addEventListener('change', (e) =>
     {
-        e.target.value = fixValue(e.target.value);
-        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
-        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+        fixTargetValue(e.target);
+        qtyManagement(urlParams.get('id'), getModelSelected(), getQuantitySelected());
+        makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
-function listenMinusButton (product)
+function listenMinusButton ()
 {
     document.querySelector('#minusButton').addEventListener('click', (e) =>
     {
-        --document.querySelector(`#${e.currentTarget.parentElement.id} input`).value;
-        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
-        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+        let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
+        decreaseTargetValue(target);
+        activateTargetEvent(target, "change");
     });
 }
 
-function listenPlusButton (product)
+function listenPlusButton ()
 {
     document.querySelector('#plusButton').addEventListener('click', (e) =>
     {
-        ++document.querySelector(`#${e.currentTarget.parentElement.id} input`).value;
-        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
-        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+        let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
+        increaseTargetValue(target);
+        activateTargetEvent(target, "change");
     });
 }
 
-function listenTrashButton (product)
+function listenTrashButton ()
 {
     document.querySelector('#trashButton').addEventListener('click', (e) =>
     {
-        document.querySelector(`#${e.currentTarget.parentElement.id} input`).value = 0;
-        qtyManagement(product._id, getModelSelected(), getQuantitySelected());
-        disableElt(document.querySelector('#minusButton'), getQuantitySelected());
+        let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
+        setTargetValue(target, 0);
+        activateTargetEvent(target, "change");
     });
 }
 
