@@ -264,7 +264,46 @@ formInputs.forEach((input) => {
         {
             console.log(`Le champ ${input.id} ne correspond pas à la règle : ${formInstructions[input.id]}`);
             input.classList.add("error");
+            input.value = "";
             input.nextElementSibling.innerText = formInstructions[input.id];
         }
     });
+});
+
+//billing address manager
+
+let billingAddressBlock = document.getElementById("billingAddressBlock");
+billingAddressBlock.style.display = "none";
+let billingCheckBox = document.getElementById("billingCheckBox");
+billingCheckBox.addEventListener("change", (e) => 
+{
+    if (billingCheckBox.checked == true)
+    {
+        billingAddressBlock.style.display = "none";
+    }
+    else
+    {
+        billingAddressBlock.style.display = "block";
+    }
+});
+
+//command
+document.getElementById('command').addEventListener('click', () =>
+{
+    let formInputs = Array.from(document.querySelectorAll("form input[required]"));
+    function isInputEmpty(input)
+    {
+        return (input.value == "")
+    }    
+
+    console.log(formInputs);
+    if (formInputs.some(isInputEmpty))
+    {
+        alert("Les coordonnées doivent être complétées.");
+    }
+    else
+    {
+        alert("commande effectuée")
+        window.location.replace("order.html");
+    }
 });

@@ -124,36 +124,38 @@
 					<fieldset>
 						<legend>Adresse de livraison</legend>
 						<div>
-							<label for="billingAdress">Identique à l'adresse de facturation</label>
-							<input id="billingAdress" type="checkbox" checked/>
+							<label for="billingCheckBox">Identique à l'adresse de facturation</label>
+							<input id="billingCheckBox" type="checkbox" checked/>
 						</div>
-						<!-- <div>
-							<label for="adress">Adresse *</label>
-							<input id="adress" placeholder="exemple : 42ter rue de la Liberté" type="text" required />
+						<div id="billingAddressBlock">
+							<div>
+								<label for="billingAddress">Adresse</label>
+								<input id="billingAddress" placeholder="exemple : 42ter rue de la Liberté" type="text" />
+							</div>
+							<div>
+								<label for="billingComplement">Complément</label>
+								<input id="billingComplement" placeholder="exemple : Hameau de la montagne" type="text" />
+							</div>
+							<div>
+								<label for="billingZipCode">Code postal</label>
+								<input id="billingZipCode" placeholder="exemple : 11111" type="number" />
+							</div>
+							<div>
+								<label for="billingCity">Ville</label>
+								<input id="billingCity" placeholder="exemple : Paris" type="text" />
+							</div>
+							<div>
+								<label for="billingCountry">Pays / Zone géographique</label>
+								<select id="billingCountry">
+									<option value="fr">France</option>
+									<option value="ue">Union Européenne</option>
+									<option value="w">Monde (hors Union Européenne)</option>
+								</select>
+							</div>
 						</div>
-						<div>
-							<label for="complement">Complément</label>
-							<input id="complement" placeholder="exemple : Hameau de la montagne" type="text" />
-						</div>
-						<div>
-							<label for="zipCode">Code postal *</label>
-							<input id="zipCode" placeholder="exemple : 11111" type="number" required />
-						</div>
-						<div>
-							<label for="city">Ville *</label>
-							<input id="city" placeholder="exemple : Paris" type="text" required />
-						</div>
-						<div>
-							<label for="country">Pays / Zone géographique *</label>
-							<select id="country">
-								<option value="fr">France</option>
-								<option value="ue">Union Européenne</option>
-								<option value="w">Monde (hors Union Européenne)</option>
-							</select>
-						</div> -->
 					</fieldset>
 
-					<button type="submit">
+					<button id="command" type="submit">
 						Commander
 					</button>
 				</form>
