@@ -10847,3 +10847,11 @@ footer {
 .jm_red {
   color: red;
 }
+
+.error {
+  background-color: #FF7070;
+}
+
+.errorInstruction {
+  color: red;
+}
