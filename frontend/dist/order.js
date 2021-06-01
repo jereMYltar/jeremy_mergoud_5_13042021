@@ -31,16 +31,6 @@ eval("\nmodule.exports = function () {\n\treturn /[\\u001b\\u009b][[()#;?]*(?:[0
 
 /***/ }),
 
-/***/ "./src/order.js":
-/*!**********************!*\
-  !*** ./src/order.js ***!
-  \**********************/
-/***/ (() => {
-
-eval("\n\n//# sourceURL=webpack://projet-5/./src/order.js?");
-
-/***/ }),
-
 /***/ "./node_modules/events/events.js":
 /*!***************************************!*\
   !*** ./node_modules/events/events.js ***!
@@ -404,7 +394,6 @@ eval("var map = {\n\t\"./log\": \"./node_modules/webpack/hot/log.js\"\n};\n\n\nf
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	__webpack_require__("./src/order.js");
 /******/ 	var __webpack_exports__ = __webpack_require__("./node_modules/webpack-dev-server/client/index.js?http://localhost:9000");
 /******/ 	
 /******/ })()

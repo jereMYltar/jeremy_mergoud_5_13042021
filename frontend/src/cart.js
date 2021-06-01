@@ -288,22 +288,43 @@ billingCheckBox.addEventListener("change", (e) =>
 });
 
 //command
-document.getElementById('command').addEventListener('click', () =>
+document.getElementById('command').addEventListener('click', (e) =>
 {
+    e.preventDefault();
     let formInputs = Array.from(document.querySelectorAll("form input[required]"));
-    function isInputEmpty(input)
-    {
-        return (input.value == "")
-    }    
-
-    console.log(formInputs);
     if (formInputs.some(isInputEmpty))
     {
-        alert("Les coordonnées doivent être complétées.");
+        alert("Il reste des champs à compléter !");
+        return;
     }
-    else
-    {
-        alert("commande effectuée")
-        window.location.replace("order.html");
-    }
+    
+    storage.remove("contact");
+    storage.set("contact", createContact());
+    redirect("resume.html");
 });
+
+function isInputEmpty(input)
+{
+    return (input.value == "")
+}
+
+function redirect(url)
+{
+    location.href = url;
+}
+
+function createContact ()
+{
+    let contact = {
+        firstName : document.getElementById("firstName").value,
+        lastName : document.getElementById("lastName").value,
+        address : document.getElementById("address").value,
+        city : `${document.getElementById("city").value} (${document.getElementById("zipCode").value})`,
+        email : document.getElementById("email").value
+    };
+    if (!isInputEmpty(document.getElementById("complement")))
+    {
+        contact.address += ` - ${document.getElementById("complement").value}`;
+    }
+    return contact;
+}

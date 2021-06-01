@@ -28,4 +28,9 @@ export class Storage {
     {
         this.location.removeItem(key);
     }
+
+    clear()
+    {
+        this.location.clear();
+    }
 }
