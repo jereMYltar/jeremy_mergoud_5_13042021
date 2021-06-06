@@ -42,7 +42,6 @@ function jmClassCreator ()
     let sheet = document.createElement('style');
     sheet.innerHTML = `.jm {
         overflow: visible;
-        width: 1em;
         height: 1em;
         vertical-align: -.125rem;
         display: inline-block;
