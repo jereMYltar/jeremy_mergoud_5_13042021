@@ -2,7 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {displayIcons} from './jmicons.js';
-import {getQuantity, displayCartCount, hide} from './utils.js';
+import {getQuantity} from './utils.js';
 import {Storage} from './storage.js';
 
 let storage = new Storage();
@@ -25,12 +25,11 @@ fetch('http://localhost:3000/api/teddies/order',
 {
     return res.json();
 })
-.then((products) =>
+.then((command) =>
 {
-    displayConfirmation(products);
-    display(products.products);//product est un objet contenant contact(objet des coordonnées), orderId(string) et products (un tableau des produits présents dans le panier)
-    storage.clear();
-    hide('cartCount');
+    display(command.products);
+    displayConfirmation(command);
+    storage.clearCart();
 })
 .catch((res) =>
 {
@@ -40,13 +39,13 @@ fetch('http://localhost:3000/api/teddies/order',
 // Render
 function renderProduct(product)
 {
-    return `
-        <div class="displayRow">
-            <a href="product.html?id=${product._id}" class="displayColumn" >
-                <img src="${product.imageUrl}" alt="${product.name}" class="cartImage"/>
-                <h3 class="cartItemName">${product.name}</h3>
+        return `
+        <div class="d-flex flex-row p-4">
+            <a href="product.html?id=${product._id}" class="d-flex flex-column text-center col-3" >
+                <img src="${product.imageUrl}" alt="${product.name}" class="w-100 col-10 text-center"/>
+                <h3 class="fs-4 fw-bold">${product.name}</h3>
             </a>
-            <div class="displayColumn" id="${product._id}">
+            <div class="d-flex flex-column px-2 col-9" id="${product._id}">
             </div>
         </div>`;
 }
@@ -55,10 +54,10 @@ function renderModel(product, model)
 {
     return `
         <div class="displayRow" id="${setId(product._id, model)}">
-            <h4>${model}</h4>
-            <p class="unitPrice">${(product.price/100).toFixed(2)} € TTC</p>
-            <p class="displayRow  qty"></p>
-            <p class="subtotal">Prix total</p>
+            <h4 class="fs-6 text-center m-0 col-2">${model}</h4>
+            <p class="unitPrice fs-6 text-center m-0 col-2">${(product.price/100).toFixed(2)} €</p>
+            <p class="displayRow qty fs-6 text-center m-0 col-3"></p>
+            <p class="subtotal fs-6 text-end m-0 col-2">Prix total</p>
         </div>`;
 }
 
@@ -69,7 +68,6 @@ function display (products)
     displayQuantities(products);
     displayTotals(products);
     displayIcons();
-    displayCartCount();
 }
 
 function displayProducts(cart, products)
@@ -94,7 +92,7 @@ function displayQuantities ()
     document.getElementsByClassName(`qty`).forEach((elt) =>
     {
         let source = elt.parentElement.id;
-        elt.innerText = `   x${getQuantity(storage.get("cart"), getId(source), getModel(source))}  = `;
+        elt.innerText = `${getQuantity(storage.get("cart"), getId(source), getModel(source))}`;
     });
 }
 
@@ -106,7 +104,7 @@ function displayTotals (products)
         let source = elt.parentElement.id;
         let qty = getQuantity(storage.get("cart"), getId(source), getModel(source));
         let unitPrice = findProduct(products, [getId(source)]).price;
-        elt.innerText = calculateSubtotal(unitPrice, qty) + " € TTC";
+        elt.innerText = calculateSubtotal(unitPrice, qty) + " €";
         total += qty * unitPrice;
     });
     document.getElementById('totalPrice').innerText = (total / 100).toFixed(2) + " € TTC";

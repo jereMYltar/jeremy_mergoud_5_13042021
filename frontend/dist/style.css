@@ -10732,7 +10732,6 @@ textarea.form-control-lg {
 #main {
   max-width: 900px;
   margin: auto;
-  background-color: #F4EAF1FF;
 }
 
 nav {
@@ -10743,7 +10742,7 @@ nav {
 }
 
 a {
-  color: black;
+  color: inherit;
   text-decoration: none;
 }
 
@@ -10839,10 +10838,6 @@ input[type=number] {
 [type=number]::-webkit-inner-spin-button, [type=number]::-webkit-outer-spin-button {
   appearance: none;
   margin: 0px;
-}
-
-footer {
-  font-size: 5rem;
 }
 
 .jm_red {

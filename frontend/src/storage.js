@@ -29,7 +29,7 @@ export class Storage {
         this.location.removeItem(key);
     }
 
-    clear()
+    clearCart()
     {
         this.location.clear();
     }

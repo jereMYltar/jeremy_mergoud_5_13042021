@@ -2,7 +2,7 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import './style.scss';
 import {displayIcons} from './jmicons.js';
-import {haveId, getQuantity, qtyManagement, displayCartCount, fixTargetValue, activateTargetEvent, increaseTargetValue, decreaseTargetValue, setTargetValue} from './utils.js';
+import {haveId, getQuantity, qtyManagement, displayCartCount, fixTargetValue, activateTargetEvent, increaseTargetValue, decreaseTargetValue, setTargetValue, isEmpty} from './utils.js';
 import {Storage} from './storage.js';
 
 let storage = new Storage();
@@ -24,12 +24,12 @@ fetch('http://localhost:3000/api/teddies/')
 function renderProduct(product)
 {
     return `
-        <div class="displayRow">
-            <a href="product.html?id=${product._id}" class="displayColumn" >
-                <img src="${product.imageUrl}" alt="${product.name}" class="cartImage"/>
-                <h3 class="cartItemName">${product.name}</h3>
+        <div class="d-flex flex-row p-4">
+            <a href="product.html?id=${product._id}" class="d-flex flex-column text-center col-3" >
+                <img src="${product.imageUrl}" alt="${product.name}" class="w-100 col-10 text-center"/>
+                <h3 class="fs-4 fw-bold">${product.name}</h3>
             </a>
-            <div class="displayColumn" id="${product._id}">
+            <div class="d-flex flex-column px-2 col-9" id="${product._id}">
             </div>
         </div>`;
 }
@@ -37,22 +37,22 @@ function renderProduct(product)
 function renderModel(product, model)
 {
     return `
-        <div class="displayRow" id="${setId(product._id, model)}">
-            <h4>${model}</h4>
-            <p class="unitPrice">${(product.price/100).toFixed(2)} € TTC</p>
-            <div class="displayRow" id="${model.replace(" ", "_")}_qty">
-                <button class="minusButton">
+        <div class="d-flex flex-row align-items-center mb-1" id="${setId(product._id, model)}">
+            <h4 class="fs-5 text-start col-3 m-0">${model}</h4>
+            <p class="fs-5 text-center col-2 m-0">${(product.price/100).toFixed(2)} €</p>
+            <div class="d-flex flex-row fs-5 col-3 mx-auto" id="${model.replace(" ", "_")}_qty">
+                <button class="minusButton bg-none border-0">
                     <i class="jmi_minusSimple"></i>
                 </button>
-                <input type="number" min=0 value="0" />
-                <button class="plusButton">
+                <input type="number" min=0 value="0" class="border-0 col-5"/>
+                <button class="plusButton bg-none border-0">
                     <i class="jmi_plusSimple"></i>
                 </button>
-                <button class="trashButton">
+                <button class="trashButton bg-none border-0 mx-2">
                     <i class="jmi_trashFill"></i>
                 </button>
             </div>
-            <p class="subtotal">Prix total</p>
+            <p class="subtotal m-0 text-end fs-5 col-2">Prix total</p>
         </div>`;
 }
 
@@ -100,10 +100,10 @@ function displayTotals (products)
         let source = elt.parentElement.id;
         let qty = getQuantity(storage.get("cart"), getId(source), getModel(source));
         let unitPrice = findProduct(products, [getId(source)]).price;
-        elt.innerText = calculateSubtotal(unitPrice, qty) + " € TTC";
+        elt.innerText = calculateSubtotal(unitPrice, qty) + " €";
         total += qty * unitPrice;
     });
-    document.getElementById('totalPrice').innerText = (total / 100).toFixed(2) + " € TTC";
+    document.getElementById('totalPrice').innerText = (total / 100).toFixed(2) + " €";
 }
 
 // Listeners
@@ -227,6 +227,21 @@ function calculateSubtotal(unitPrice, qty)
     return (unitPrice * qty / 100).toFixed(2);
 }
 
+// Cart validation
+
+document.getElementById('cartValidation').addEventListener('click', (e) => 
+{
+    if (isEmpty(storage.get('cart')))
+    {
+        alert("Votre panier est vide !");
+    }
+    else
+    {
+        document.getElementById('customer').classList.toggle('noDisplay');
+        e.currentTarget.classList.add('noDisplay');
+    }
+})
+
 // Form manager
 
 let formInstructions = {
@@ -256,14 +271,12 @@ formInputs.forEach((input) => {
     input.addEventListener("change", () => {
         if (formRegExp[input.id].test(input.value))
         {
-            console.log(`Le champ ${input.id} est correct.`);
-            input.classList.remove("error");
-            input.nextElementSibling.innerText = "ok";
+            input.classList.remove("bg-warning");
+            input.nextElementSibling.innerText = "";
         }
         else
         {
-            console.log(`Le champ ${input.id} ne correspond pas à la règle : ${formInstructions[input.id]}`);
-            input.classList.add("error");
+            input.classList.add("bg-warning");
             input.value = "";
             input.nextElementSibling.innerText = formInstructions[input.id];
         }
