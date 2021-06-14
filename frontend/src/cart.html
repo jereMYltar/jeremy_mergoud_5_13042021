@@ -38,144 +38,142 @@
 
 </head>
 
-<body>
-	<div id="main">
-		<header class="container-fluid bg-secondary bg-gradient ">
-			<a href="index.html" class="fs-1">
-				<i class="jmi_orinocoIco"></i>
-				<i class="jmi_orinocoText"></i>
-			</a>
-			<a href="cart.html" class="cart fs-1">
-				<i class="jmi_basket"></i>
-				<p id="cartCount">0</p>
-			</a>
-		</header>
-		<main class="bg-light">
-			<section class="d-flex pt-3">
-				<p class="fs-6 text-center m-0 col-3">Produit</p>
-				<p class="fs-6 text-center m-0 col-2">Modèle</p>
-				<p class="fs-6 text-center m-0 col-2">Prix unitaire</p>
-				<p class="fs-6 text-center m-0 col-3">Quantité</p>
-				<p class="fs-6 text-center m-0 col-2">Prix total (TTC)</p>
-			</section>
-			<section id="cart">
-			</section>
-			<section class="fs-4 fw-bold d-flex w-100 justify-content-end">
-				<div class="pe-5">Montant de votre panier :</div>
-				<div id="totalPrice"></div>
-			</section>
-			<section class="d-flex justify-content-center py-5">
-				<button id="cartValidation" class="btn btn-secondary fs-5 fw-bold">Valider le panier</button>
-			</section>
-			<section id="customer" class="noDisplay">
-				<form id="form_1" class="pb-4">
-					<p class="color-black">Les champs obligatoires sont indiqués par une étoile : *</p>
-					<fieldset>
-						<legend>Informations personnelles</legend>
+<body id="main" class="d-flex flex-column min-vh-100 my-0 mx-auto">
+	<header class="container-fluid bg-secondary bg-gradient ">
+		<a href="index.html" class="fs-1">
+			<i class="jmi_orinocoIco"></i>
+			<i class="jmi_orinocoText"></i>
+		</a>
+		<a href="cart.html" class="cart fs-1">
+			<i class="jmi_basket"></i>
+			<p id="cartCount">0</p>
+		</a>
+	</header>
+	<main class="bg-light flex-grow-1">
+		<section class="d-flex pt-3">
+			<p class="fs-6 text-center m-0 col-3">Produit</p>
+			<p class="fs-6 text-center m-0 col-2">Modèle</p>
+			<p class="fs-6 text-center m-0 col-2">Prix unitaire</p>
+			<p class="fs-6 text-center m-0 col-3">Quantité</p>
+			<p class="fs-6 text-center m-0 col-2">Prix total (TTC)</p>
+		</section>
+		<section id="cart">
+		</section>
+		<section class="fs-4 fw-bold d-flex w-100 justify-content-end">
+			<div class="pe-5">Montant de votre panier :</div>
+			<div id="totalPrice"></div>
+		</section>
+		<section class="d-flex justify-content-center py-5">
+			<button id="cartValidation" class="btn btn-secondary fs-5 fw-bold">Valider le panier</button>
+		</section>
+		<section id="customer" class="noDisplay">
+			<form id="form_1" class="pb-4">
+				<p class="color-black">Les champs obligatoires sont indiqués par une étoile : *</p>
+				<fieldset>
+					<legend>Informations personnelles</legend>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="gender" class="col-2">Civilité</label>
+						<select id="gender" class="col-5">
+							<option value="none">Non renseigné</option>
+							<option value="m">Homme</option>
+							<option value="f">Femme</option>
+						</select>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="firstName" class="col-2">Prénom *</label>
+						<input id="firstName" placeholder="exemple : Prénom"  class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="lastName" class="col-2">NOM *</label>
+						<input id="lastName" placeholder="exemple : NOM" class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="telNumber" class="col-2">Téléphone</label>
+						<input id="telNumber" placeholder="exemple : 01 23 45 67 89" type="tel" class="col-5" />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="email" class="col-2">E-mail *</label>
+						<input id="email" placeholder="exemple : exemple@domaine.fr" type="email" class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Adresse de facturation</legend>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="address" class="col-2">Adresse *</label>
+						<input id="address" placeholder="exemple : 123 rue de l'Exemple" type="text" class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="complement" class="col-2">Complément</label>
+						<input id="complement" placeholder="exemple : Hameau de la montagne" type="text" class="col-5" />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="zipCode" class="col-2">Code postal *</label>
+						<input id="zipCode" placeholder="exemple : 11111" type="number" class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="city" class="col-2">Ville *</label>
+						<input id="city" placeholder="exemple : Paris" type="text" class="col-5" required />
+						<p class="errorInstruction col-4 m-0"></p>
+					</div>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="country" class="col-2">Pays / Zone géographique *</label>
+						<select id="country" class="col-5">
+							<option value="fr">France</option>
+							<option value="ue">Union Européenne</option>
+							<option value="w">Monde (hors Union Européenne)</option>
+						</select>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Adresse de livraison</legend>
+					<div class="container-fluid ms-3 pb-4">
+						<label for="billingCheckBox">Identique à l'adresse de facturation</label>
+						<input id="billingCheckBox" type="checkbox" checked/>
+					</div>
+					<div id="billingAddressBlock">
 						<div class="container-fluid ms-3 pb-4">
-							<label for="gender" class="col-2">Civilité</label>
-							<select id="gender" class="col-5">
-								<option value="none">Non renseigné</option>
-								<option value="m">Homme</option>
-								<option value="f">Femme</option>
-							</select>
+							<label for="billingAddress" class="col-2">Adresse</label>
+							<input id="billingAddress" placeholder="exemple : 123 rue de l'Exemple" type="text" class="col-5" />
 						</div>
 						<div class="container-fluid ms-3 pb-4">
-							<label for="firstName" class="col-2">Prénom *</label>
-							<input id="firstName" placeholder="exemple : Prénom"  class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
+							<label for="billingComplement" class="col-2">Complément</label>
+							<input id="billingComplement" placeholder="exemple : Hameau de la montagne" type="text" class="col-5" />
 						</div>
 						<div class="container-fluid ms-3 pb-4">
-							<label for="lastName" class="col-2">NOM *</label>
-							<input id="lastName" placeholder="exemple : NOM" class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
+							<label for="billingZipCode" class="col-2">Code postal</label>
+							<input id="billingZipCode" placeholder="exemple : 11111" type="number" class="col-5" />
 						</div>
 						<div class="container-fluid ms-3 pb-4">
-							<label for="telNumber" class="col-2">Téléphone</label>
-							<input id="telNumber" placeholder="exemple : 01 23 45 67 89" type="tel" class="col-5" />
-							<p class="errorInstruction col-4 m-0"></p>
+							<label for="billingCity" class="col-2">Ville</label>
+							<input id="billingCity" placeholder="exemple : Paris" type="text" class="col-5" />
 						</div>
 						<div class="container-fluid ms-3 pb-4">
-							<label for="email" class="col-2">E-mail *</label>
-							<input id="email" placeholder="exemple : exemple@domaine.fr" type="email" class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
-						</div>
-					</fieldset>
-					<fieldset>
-						<legend>Adresse de facturation</legend>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="address" class="col-2">Adresse *</label>
-							<input id="address" placeholder="exemple : 123 rue de l'Exemple" type="text" class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
-						</div>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="complement" class="col-2">Complément</label>
-							<input id="complement" placeholder="exemple : Hameau de la montagne" type="text" class="col-5" />
-							<p class="errorInstruction col-4 m-0"></p>
-						</div>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="zipCode" class="col-2">Code postal *</label>
-							<input id="zipCode" placeholder="exemple : 11111" type="number" class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
-						</div>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="city" class="col-2">Ville *</label>
-							<input id="city" placeholder="exemple : Paris" type="text" class="col-5" required />
-							<p class="errorInstruction col-4 m-0"></p>
-						</div>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="country" class="col-2">Pays / Zone géographique *</label>
-							<select id="country" class="col-5">
+							<label for="billingCountry" class="col-2">Pays / Zone géographique</label>
+							<select id="billingCountry" class="col-5" >
 								<option value="fr">France</option>
 								<option value="ue">Union Européenne</option>
 								<option value="w">Monde (hors Union Européenne)</option>
 							</select>
 						</div>
-					</fieldset>
-					<fieldset>
-						<legend>Adresse de livraison</legend>
-						<div class="container-fluid ms-3 pb-4">
-							<label for="billingCheckBox">Identique à l'adresse de facturation</label>
-							<input id="billingCheckBox" type="checkbox" checked/>
-						</div>
-						<div id="billingAddressBlock">
-							<div class="container-fluid ms-3 pb-4">
-								<label for="billingAddress" class="col-2">Adresse</label>
-								<input id="billingAddress" placeholder="exemple : 123 rue de l'Exemple" type="text" class="col-5" />
-							</div>
-							<div class="container-fluid ms-3 pb-4">
-								<label for="billingComplement" class="col-2">Complément</label>
-								<input id="billingComplement" placeholder="exemple : Hameau de la montagne" type="text" class="col-5" />
-							</div>
-							<div class="container-fluid ms-3 pb-4">
-								<label for="billingZipCode" class="col-2">Code postal</label>
-								<input id="billingZipCode" placeholder="exemple : 11111" type="number" class="col-5" />
-							</div>
-							<div class="container-fluid ms-3 pb-4">
-								<label for="billingCity" class="col-2">Ville</label>
-								<input id="billingCity" placeholder="exemple : Paris" type="text" class="col-5" />
-							</div>
-							<div class="container-fluid ms-3 pb-4">
-								<label for="billingCountry" class="col-2">Pays / Zone géographique</label>
-								<select id="billingCountry" class="col-5" >
-									<option value="fr">France</option>
-									<option value="ue">Union Européenne</option>
-									<option value="w">Monde (hors Union Européenne)</option>
-								</select>
-							</div>
-						</div>
-					</fieldset>
-					<section class="d-flex justify-content-center my-4">
-						<button id="command" class="btn btn-secondary fs-5 fw-bold">Commander</button>
-					</section>
-				</form>
-			</section>
-		</main>
-		<footer class="bg-dark d-flex justify-content-around fs-5 text-white">
-			<a href="">Qui sommes nous ?</a>
-			<a href="">Contacts</a>
-			<a href="">Mentions légales</a>
-		</footer>
-	</div>
+					</div>
+				</fieldset>
+				<section class="d-flex justify-content-center my-4">
+					<button id="command" class="btn btn-secondary fs-5 fw-bold">Commander</button>
+				</section>
+			</form>
+		</section>
+	</main>
+	<footer class="bg-dark d-flex justify-content-around fs-5 text-white">
+		<a href="">Qui sommes nous ?</a>
+		<a href="">Contacts</a>
+		<a href="">Mentions légales</a>
+	</footer>
 </body>
 </html>

@@ -2,35 +2,35 @@ export class Storage {
 
     constructor()
     {
-        this.location = localStorage;
+        this.engine = localStorage;
     }
     
     has(key)
     {
-        return (!this.location.getItem(key));
+        return (!this.engine.getItem(key));
     }
     
     get(key)
     {
         if (this.has(key))
         {
-            this.location.setItem(key, "{}");
+            this.engine.setItem(key, "{}");
         }
-        return JSON.parse(this.location.getItem(key));
+        return JSON.parse(this.engine.getItem(key));
     }
     
     set(key, value)
     {
-        this.location.setItem(key, JSON.stringify(value));
+        this.engine.setItem(key, JSON.stringify(value));
     }
     
     remove(key)
     {
-        this.location.removeItem(key);
+        this.engine.removeItem(key);
     }
 
     clearCart()
     {
-        this.location.clear();
+        this.engine.clear();
     }
 }
