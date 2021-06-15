@@ -4,12 +4,13 @@ Mise en oeuvre du projet n°5 de l'élève Jérémy MERGOUD
 
 1- Télécharger le contenu de la branche "project"
 2- Ouvrez le répertoire "PROJET 5" dans un éditeur de code, Visual Studio Code (gratuit) par exemple
-2- Dans ce répertoire, ouvrez deux terminaux
-3- Dans le premier exécutez 'npm install'
-4- Une fois l'installation des modules effectuée, allez dans le répertoire 'frontend' à l'aide de la commande 'cd frontend'
-5- Exécutez 'npm run serve'
-6- Dans le second terminal, exécutez la commande 'cd backend' afin de vous déplacer dans le répertoire 'backend'
-7- Toujours dans ce second terminal exécutez 'node server"
-8- Si tout se passe bien, vous avez le message "Listening on port 3000" affiché dans ce second terminal
-9- Dans le premier terminal, un lien vers un serveur local a dû être affiché ('i ｢wds｣: Project is running at http://localhost:9000/'): cliquez dessus pour ouvrir le projet
-10- Le projet est désormais actif et prêt à être exploré.
+3- Dans ce répertoire, ouvrez deux terminaux
+4- Dans le premier terminal, allez dans le répertoire 'frontend' à l'aide de la commande 'cd frontend'
+5- Puis exécutez la commande 'npm install'
+6- Une fois l'installation des modules effectuée, exécutez 'npm run serve'
+7- Un lien vers un serveur local a dû être affiché ('i ｢wds｣: Project is running at http://localhost:9000/'): cliquez dessus pour ouvrir le projet
+8- Dans le second terminal, exécutez la commande 'cd backend' afin de vous déplacer dans le répertoire 'backend'
+9- Puis exécutez la commande 'npm install'
+10- Une fois l'installation des modules effectuée, exécutez 'node server"
+11- Si tout se passe bien, vous avez le message "Listening on port 3000" affiché dans ce second terminal
+12- Actualisez la page de l'explorateur où le projet s'est ouvert : il est désormais actif et prêt à être exploré.
