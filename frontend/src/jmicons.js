@@ -32,7 +32,7 @@ export function displayIcons()
             }
         });
         completeColors(name, colorsArray);
-        svgCreator(element, name, colorsArray, classesArray);
+        createSvg(element, name, colorsArray, classesArray);
     });
 }
 
@@ -90,28 +90,28 @@ function addHashtag (colors)
 }
 
 //creates the <svg> tag, insert it after <i> then delete <i>
-function svgCreator (element, name, colors, classes)
+function createSvg (element, name, colors, classes)
 {
     let icon = `<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" role="img" viewBox="${icons[name][1]}" class="jm`;
     for (let i = 0; i < classes.length; i++)
     {
         icon += ` ${classes[i]}`;
     }
-    icon += `"><g> ${pathCreator(name, colors)} </g></svg>`;
+    icon += `"><g> ${createPath(name, colors)} </g></svg>`;
 
     element.insertAdjacentHTML('afterend', icon);
     element.parentNode.removeChild(element);
 }
 
 //creates elements needed by svg tags : colors, linear or radial gradients and paths
-function pathCreator (name, colors)
+function createPath (name, colors)
 {
     let path = "";
     for (let i = 0; i < icons[name][3].length; i++) {
         if (colors[i][0] == "linear") { //if colors[i] is a linear gradient
-            path += linearDefsConstruct (name, colors, i);
+            path += createLinearDefs (name, colors, i);
         } else if (colors[i][0] == "radial") { //if colors[i] is a radial gradient
-            path += radialDefsConstruct (name, colors, i);
+            path += createRadialDefs (name, colors, i);
         } else if (/^(#[0-9a-fA-F]{6,8})|(currentColor)$/.test(colors[i])) { //if colors[i] is a hexadecimal value
             path += `<path fill=${colors[i]} d="${icons[name][3][i]}"></path>`;
         } else { //sinon
@@ -122,7 +122,7 @@ function pathCreator (name, colors)
 }
 
 //creates linear gradient and path tag
-function linearDefsConstruct (name, colors, i)
+function createLinearDefs (name, colors, i)
 {
     let uniqueId = Math.random().toString(36).slice(-8);
     return `<defs><linearGradient id='gradient_${uniqueId}'
@@ -130,13 +130,13 @@ function linearDefsConstruct (name, colors, i)
             y1=${colors[i][1][1].toString()} 
             x2=${colors[i][1][2].toString()} 
             y2=${colors[i][1][3].toString()}>
-            ${stopConstruct(colors, i)}
+            ${createStops(colors, i)}
             </linearGradient></defs>
             <path fill="url(#gradient_${uniqueId})" d="${icons[name][3][i]}"></path>`;
 }
 
 //creates radial gradient and path tag
-function radialDefsConstruct (name, colors, i)
+function createRadialDefs (name, colors, i)
 {
     let uniqueId = Date.now();
     return `<defs><radialGradient id='gradient_${uniqueId}'
@@ -145,13 +145,13 @@ function radialDefsConstruct (name, colors, i)
             r=${colors[i][1][2].toString()} 
             ${(colors[i][1][3] && colors[i][1][4]) ? `fx=${colors[i][1][3].toString()} fy=${colors[i][1][4].toString()}` : ''}
             ${(colors[i][3]) ? ` spreadMethod="${colors[i][3]}">` : `>`}
-            ${stopConstruct(colors, i)}
+            ${createStops(colors, i)}
             </radialGradient></defs>
             <path fill="url(#gradient_${uniqueId})" d="${icons[name][3][i]}"></path>`;
 }
 
 //creates stop tags for linear and radial gradients
-function stopConstruct(colors, i)
+function createStops(colors, i)
 {
     let stops = "";
     for (let c = 0; c < colors[i][2].length; c++)
