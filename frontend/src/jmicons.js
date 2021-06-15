@@ -1,7 +1,7 @@
 //search all nodes with jmi classes, and replace them with svg tag
 export function displayIcons()
 {
-    jmClassCreator();
+    addJmClass();
     let elements = document.querySelectorAll('i[class*="jmi"]');
     elements.forEach(element => {
         let name = "";
@@ -37,17 +37,20 @@ export function displayIcons()
 }
 
 //create the generic jm class
-function jmClassCreator ()
+function addJmClass ()
 {
-    let sheet = document.createElement('style');
-    sheet.innerHTML = `.jm {
+    document.styleSheets[0].insertRule(renderJmClass(), document.styleSheets[0].length); 
+}
+
+function renderJmClass ()
+{
+    return `.jm {
         overflow: visible;
         height: 1em;
         vertical-align: -.125rem;
         display: inline-block;
         font-size: inherit;}
         `;
-    document.body.appendChild(sheet);
 }
 
 //completes the color chart, and formats them to make them usable 
