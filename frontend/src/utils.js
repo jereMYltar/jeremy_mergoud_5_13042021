@@ -4,27 +4,6 @@ import {Storage} from './storage.js';
 
 let storage = new Storage();
 
-export function ajax(url, method = 'GET') {
-    return new Promise((resolve, reject) => 
-    {
-        let request = new XMLHttpRequest();
-        request.open(method, url);
-
-        request.addEventListener('load', function()
-        {
-            if (request.status >= 200) {
-                resolve(JSON.parse(request.response));
-            } else {
-                reject(request.statusText)
-            }
-        })
-
-        request.setRequestHeader("Content-Type", "application/JSON;charset=UTF-8");
-        request.send();
-
-    })
-}
-
 //has, add or remove id/model in an obj
 export function haveId (obj, id)
 {

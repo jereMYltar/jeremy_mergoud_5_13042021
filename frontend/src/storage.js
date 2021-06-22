@@ -7,12 +7,12 @@ export class Storage {
     
     has(key)
     {
-        return (!this.engine.getItem(key));
+        return (!!this.engine.getItem(key));
     }
     
     get(key)
     {
-        if (this.has(key))
+        if (!this.has(key))
         {
             this.engine.setItem(key, "{}");
         }
