@@ -1,8 +1,8 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import './style.scss';
+import '../style/style.scss';
 import {displayIcons} from './jmicons.js';
-import {getQuantity} from './utils.js';
+import * as utils from './utils.js';
 import {Storage} from './storage.js';
 
 let storage = new Storage();
@@ -34,6 +34,8 @@ fetch('http://localhost:3000/api/teddies/order',
 .catch((res) =>
 {
     console.log(res);
+    alert("Une erreur s'est produite, veuillez réessayer.");
+    utils.redirect("../pages/index.html");
 });
 
 // Render
@@ -41,7 +43,7 @@ function renderProduct(product)
 {
         return `
         <div class="d-flex flex-row p-4">
-            <a href="product.html?id=${product._id}" class="d-flex flex-column text-center col-3" >
+            <a href="./product.html?id=${product._id}" class="d-flex flex-column text-center col-3" >
                 <img src="${product.imageUrl}" alt="${product.name}" class="w-100 col-10 text-center"/>
                 <h3 class="fs-4 fw-bold">${product.name}</h3>
             </a>
@@ -53,7 +55,7 @@ function renderProduct(product)
 function renderModel(product, model)
 {
     return `
-        <div class="displayRow" id="${setId(product._id, model)}">
+        <div class="displayRow" id="${utils.setId(product._id, model)}">
             <h4 class="fs-6 text-center m-0 col-2">${model}</h4>
             <p class="unitPrice fs-6 text-center m-0 col-2">${(product.price/100).toFixed(2)} €</p>
             <p class="displayRow qty fs-6 text-center m-0 col-3"></p>
@@ -74,7 +76,7 @@ function displayProducts(cart, products)
 {
     Object.keys(cart).forEach((id) => 
     {
-        document.getElementById("cart").innerHTML += renderProduct(findProduct(products, id));
+        document.getElementById("cart").innerHTML += renderProduct(utils.findProduct(products, id));
         displayModels(cart, products, id);
     });
 }
@@ -83,7 +85,7 @@ function displayModels(cart, products, id)
 {
     Object.keys(cart[id]).forEach((model) => 
     {
-        document.getElementById(id).innerHTML += renderModel(findProduct(products, id), model);
+        document.getElementById(id).innerHTML += renderModel(utils.findProduct(products, id), model);
     });
 }
 
@@ -92,7 +94,7 @@ function displayQuantities ()
     document.getElementsByClassName(`qty`).forEach((elt) =>
     {
         let source = elt.parentElement.id;
-        elt.innerText = `${getQuantity(storage.get("cart"), getId(source), getModel(source))}`;
+        elt.innerText = `${utils.getQuantity(storage.get("cart"), utils.getId(source), utils.getModel(source))}`;
     });
 }
 
@@ -102,9 +104,9 @@ function displayTotals (products)
     document.querySelectorAll(`.subtotal`).forEach((elt) =>
     {
         let source = elt.parentElement.id;
-        let qty = getQuantity(storage.get("cart"), getId(source), getModel(source));
-        let unitPrice = findProduct(products, [getId(source)]).price;
-        elt.innerText = calculateSubtotal(unitPrice, qty) + " €";
+        let qty = utils.getQuantity(storage.get("cart"), utils.getId(source), utils.getModel(source));
+        let unitPrice = utils.findProduct(products, [utils.getId(source)]).price;
+        elt.innerText = utils.calculateSubtotal(unitPrice, qty) + " €";
         total += qty * unitPrice;
     });
     document.getElementById('totalPrice').innerText = (total / 100).toFixed(2) + " € TTC";
@@ -115,36 +117,4 @@ function displayConfirmation (products)
     document.getElementById('firstName').innerText = products.contact.firstName;
     document.getElementById('orderId').innerText = products.orderId;
     document.getElementById('email').innerText = products.contact.email;
-}
-
-// Tools
-function setId(id, model)
-{
-    return (model.replace(" ","_") + "__" + id);
-}
-
-function getId(string)
-{
-    let elts = string.split("__");
-    return elts[1];
-}
-
-function getModel(string)
-{
-    let elts = string.split("__");
-    return elts[0].replace("_", " ");
-}
-
-function findProduct(products, id)
-{
-    let goodKey = Object.keys(products).find((key) =>
-        {
-            return products[key]["_id"] == id;
-        });
-    return products[goodKey];
-}
-
-function calculateSubtotal(unitPrice, qty)
-{
-    return (unitPrice * qty / 100).toFixed(2);
 }

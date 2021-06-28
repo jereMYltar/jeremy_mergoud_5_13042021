@@ -1,9 +1,9 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import './style.scss';
+import '../style/style.scss';
 import {displayIcons} from './jmicons.js';
 import {Storage} from './storage.js';
-import {getQuantity, qtyManagement, displayCartCount, fixTargetValue, makeEltClickable, increaseTargetValue, decreaseTargetValue, setTargetValue, activateTargetEvent} from './utils.js';
+import * as utils from './utils.js';
 
 let storage = new Storage();
 
@@ -28,7 +28,7 @@ function display (product)
     displayOptions(product);
     displayDescription(product);
     displayQuantity(product._id, getModelSelected());
-    displayCartCount();
+    utils.displayCartCount();
     displayIcons();
 }
 
@@ -71,8 +71,8 @@ function renderOptions (product)
 
 function displayQuantity (id, model)
 {
-    document.querySelector(`aside>input`).value = getQuantity(storage.get("cart"), id, model);
-    makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
+    document.querySelector(`aside>input`).value = utils.getQuantity(storage.get("cart"), id, model);
+    utils.makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
 }
 
 // Listeners
@@ -97,9 +97,9 @@ function listenInputChange ()
 {
     document.querySelector('aside>input').addEventListener('change', (e) =>
     {
-        fixTargetValue(e.target);
-        qtyManagement(urlParams.get('id'), getModelSelected(), getQuantitySelected());
-        makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
+        utils.fixTargetValue(e.target);
+        utils.qtyManagement(urlParams.get('id'), getModelSelected(), getQuantitySelected());
+        utils.makeEltClickable(document.querySelector('#minusButton'), getQuantitySelected());
     });
 }
 
@@ -108,8 +108,8 @@ function listenMinusButton ()
     document.querySelector('#minusButton').addEventListener('click', (e) =>
     {
         let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
-        decreaseTargetValue(target);
-        activateTargetEvent(target, "change");
+        utils.decreaseTargetValue(target);
+        utils.activateTargetEvent(target, "change");
     });
 }
 
@@ -118,8 +118,8 @@ function listenPlusButton ()
     document.querySelector('#plusButton').addEventListener('click', (e) =>
     {
         let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
-        increaseTargetValue(target);
-        activateTargetEvent(target, "change");
+        utils.increaseTargetValue(target);
+        utils.activateTargetEvent(target, "change");
     });
 }
 
@@ -128,8 +128,8 @@ function listenTrashButton ()
     document.querySelector('#trashButton').addEventListener('click', (e) =>
     {
         let target = document.querySelector(`#${e.currentTarget.parentElement.id} input`);
-        setTargetValue(target, 0);
-        activateTargetEvent(target, "change");
+        utils.setTargetValue(target, 0);
+        utils.activateTargetEvent(target, "change");
     });
 }
 

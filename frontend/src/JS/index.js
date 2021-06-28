@@ -1,9 +1,9 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import './style.scss';
+import '../style/style.scss';
 
 import {displayIcons} from './jmicons.js';
-import {displayCartCount} from './utils.js';
+import * as utils from './utils.js';
 
 
 fetch('http://localhost:3000/api/teddies')
@@ -15,7 +15,7 @@ fetch('http://localhost:3000/api/teddies')
     {
         displayProducts(products);
         displayIcons();
-        displayCartCount();
+        utils.displayCartCount();
     })
 
 function displayProducts(products) 
@@ -30,7 +30,7 @@ function displayProducts(products)
 function renderProduct(product)
 {
     return `
-    <a class="item" href="product.html?id=${product._id}">
+    <a class="item" href="./pages/product.html?id=${product._id}">
         <img class="image" src=${product.imageUrl} alt=${product.name}>
         <div class="div">
             <h3 class="nom">${product.name}</h3>

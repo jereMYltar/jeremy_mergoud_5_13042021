@@ -1,0 +1,15 @@
+<!DOCTYPE html> <html lang="fr-fr"> <head> <meta charset="utf-8"> <meta name="description" content="Orinoco est une entreprise de commerce en ligne vous proposant un accès thématique à vos univers favoris."> <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"> <link rel="shortcut icon" type="image/png" href="../assets/images/ico_couleur.ico"> <title>Orinoco - Résumé de votre commande</title> <script type="application/ld+json"> {
+		"@context": "http://schema.org/",
+		"@type": "Organization",
+		"name": "Orinoco",
+		"address": {
+			"@type": "PostalAddress",
+			"addressLocality": "Paris, France",
+			"postalCode": "F-75001",
+			"streetAddress": "Place de la Concorde"
+			},
+		"email": "mailto:contact@orinoco.com",
+		"url": "https://jeremyltar.github.io/jeremy_mergoud_5_13042021/frontend/index.html",
+		"openingHours": "Lundi-Samedi 09:00-19:00",
+		"logo": "https://jeremyltar.github.io/jeremy_mergoud_5_13042021/frontend/ressources/images/logo_couleur.svg"
+		} </script> <script defer src="../JS/resume.js"></script><link href="../style/style.css" rel="stylesheet"></head> <body id="main" class="d-flex flex-column min-vh-100 my-0 mx-auto"> <header class="container-fluid bg-secondary bg-gradient"> <a href="../index.html" class="fs-1"> <i class="jmi_orinocoIco"></i> <i class="jmi_orinocoText"></i> </a> </header> <main class="bg-light flex-grow-1"> <section id="confirmation" class="p-3"> <p><span id="firstName"></span>, nous vous remercions pour votre confiance !</p> <p>Nous vous confirmons votre commande, enregistrée sous le numéro <span id="orderId"></span> et d'un montant total de <span id="totalPrice"></span>.</p> <p>Vous recevrez d'ici quelques minutes un mail de confirmation à l'adresse : <span id="email"></span></p> <p>Voici le détail de votre commande :</p> </section> <section class="d-flex pt-3"> <p class="fs-6 text-center m-0 col-3">Produit</p> <p class="fs-6 text-center m-0 col-2">Modèle</p> <p class="fs-6 text-center m-0 col-2">Prix unitaire</p> <p class="fs-6 text-center m-0 col-3">Quantité</p> <p class="fs-6 text-center m-0 col-2">Prix total (TTC)</p> </section> <section id="cart"> </section> </main> <footer class="bg-dark d-flex justify-content-around fs-5 text-white"> <a href="">Qui sommes nous ?</a> <a href="">Contacts</a> <a href="">Mentions légales</a> </footer> </body> </html>

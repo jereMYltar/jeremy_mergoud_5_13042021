@@ -6,14 +6,14 @@ module.exports = {
     stats: 'minimal',
     mode: 'development',
     entry: {
-        index: path.resolve(__dirname, './src/index.js'),
-        product: path.resolve(__dirname, './src/product.js'),
-        cart: path.resolve(__dirname, './src/cart.js'),
-        resume: path.resolve(__dirname, './src/resume.js'),
+        index: path.resolve(__dirname, './src/JS/index.js'),
+        product: path.resolve(__dirname, './src/JS/product.js'),
+        cart: path.resolve(__dirname, './src/JS/cart.js'),
+        resume: path.resolve(__dirname, './src/JS/resume.js'),
     },
     output: {
         path: path.resolve(__dirname, './dist'),
-        filename: '[name].js'
+        filename: 'JS/[name].js'
     },
     module: {
         rules: [
@@ -97,22 +97,22 @@ module.exports = {
             filename: 'index.html'
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/product.html'),
+            template: path.resolve(__dirname, './src/pages/product.html'),
             chunks: ['product'],
-            filename: 'product.html'
+            filename: 'pages/product.html'
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/cart.html'),
+            template: path.resolve(__dirname, './src/pages/cart.html'),
             chunks: ['cart'],
-            filename: 'cart.html'
+            filename: 'pages/cart.html'
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/resume.html'),
+            template: path.resolve(__dirname, './src/pages/resume.html'),
             chunks: ['resume'],
-            filename: 'resume.html'
+            filename: 'pages/resume.html'
         }),
         new MiniCssExtractPlugin({
-            filename: 'style.css',
+            filename: 'style/style.css',
         })
     ],
     devServer: {

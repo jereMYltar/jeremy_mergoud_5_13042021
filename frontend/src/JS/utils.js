@@ -137,7 +137,6 @@ export function fixTargetValue (target)
 }
 
 //Generic tools
-
 export function isEmpty(obj) {
     return Object.keys(obj).length === 0;
   }
@@ -159,5 +158,46 @@ export function show(id)
 export function hide(id)
 {
     document.getElementById(id).style.display = "none";
+}
+
+export function setId(id, model)
+{
+    return (model.replace(" ","_") + "__" + id);
+}
+
+export function getId(string)
+{
+    let elts = string.split("__");
+    return elts[1];
+}
+
+export function getModel(string)
+{
+    let elts = string.split("__");
+    return elts[0].replace("_", " ");
+}
+
+export function findProduct(products, id)
+{
+    let goodKey = Object.keys(products).find((key) =>
+        {
+            return products[key]["_id"] == id;
+        });
+    return products[goodKey];
+}
+
+export function calculateSubtotal(unitPrice, qty)
+{
+    return (unitPrice * qty / 100).toFixed(2);
+}
+
+export function isInputEmpty(input)
+{
+    return (input.value == "")
+}
+
+export function redirect(url)
+{
+    location.href = url;
 }
 
