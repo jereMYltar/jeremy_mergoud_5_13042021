@@ -118,7 +118,6 @@ function listen (products)
     listenCartValidationButton();
     listenBillingCheckboxChange();
     listenCommandButtonChange();
-
 }
 
 function listenInputsChange (products)
@@ -133,7 +132,6 @@ function listenInputsChange (products)
             displayTotals(products);
             displayManagement(e);
         });
-
     });
 }
 
@@ -241,15 +239,15 @@ function displayManagement (elt)
     };
 }
 
-function removeElementDisplayed (source)
+function removeElementDisplayed (elt)
 {
-    if (utils.haveId(storage.get("cart"),[utils.getId(source.id)]))
+    if (utils.haveId(storage.get("cart"),[utils.getId(elt.id)]))
     {
-        source.remove();
+        elt.remove();
     }
     else
     {
-        source.parentNode.parentNode.remove();
+        elt.parentNode.parentNode.remove();
     }
 }
 

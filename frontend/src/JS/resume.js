@@ -20,7 +20,6 @@ fetch('http://localhost:3000/api/teddies/order',
     method: "POST",
     body: JSON.stringify(myCommand)
 })
-
 .then((res) => 
 {
     return res.json();
